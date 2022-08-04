@@ -1,12 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Test page
-</body>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/images/hlsr.png" />
+    <meta name="viewport" content="width=device-width; initial-scale=1" />
+    <meta name="keywords" content="half life, hlsr, hl, hl2, allan, speedrun" />
+    <meta
+      name="description"
+      content="Launcher that will help you to start speedrun Half-Life games."
+    />
+    <meta property="og:title" content="HLSR 2.0" />
+    <meta
+      property="og:description"
+      content="Launcher that will help you to start speedrun Half-Life games."
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+      rel="stylesheet"
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#00abff" />
+    <meta property="og:image" content="/images/hlsr.png" />
+    <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js"
+      integrity="sha512-pCPP9sfLW9T7EZiw725jUl+ux032sjGhFE+ZAx00C1iO55ZmZJWpfNGbDf2ZF5b0UqxRqSW548PbZEWmH+S7pA=="
+      crossorigin="anonymous"
+    ></script>
+    <title>HLSR 2.0</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css?v11" />
+  </head>
+  <body>
+    <canvas id="projector"></canvas>
+    <div id="wrap">
+      <div id="page">
+        <div id="header">
+          <a
+            class="header-button"
+            href="https://discord.gg/3TN2yyJKE2"
+            target="_blank"
+          >
+            <span>Discord</span> <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        <div id="content-top">
+          <div class="info">
+            <div id="project-logo"></div>
+            <div id="project-name">HLSR</div>
+            <div id="project-version">BETA</div>
+          </div>
+          <p>Change the way you feel speedruns</p>
+        </div>
+        <div id="content-middle">
+          <div id="screenshot-wrapper">
+            <img src="/images/screenshot.png" alt="Screenshot" />
+          </div>
+        </div>
+        <div id="content-footer">
+          <div class="line">
+            <div>
+              <p>System Requirements:</p>
+              <p><b>Windows 7 — 11 (ONLY 64 Bit)</b></p>
+            </div>
+            <a
+              class="button blue"
+              href="https://github.com/InfiniteC0re/HLSR/releases/latest"
+              >DOWNLOAD <img src="/images/icons/save.svg"
+            /></a>
+          </div>
+          <div class="line">
+            <div>
+              <p>Additional Software:</p>
+              <p>
+                <b
+                  >.NET Framework 4.5, Steam
+                  <span class="accent">(WITH LICENSED HL1/HL2)</span></b
+                >
+              </p>
+            </div>
+            <a
+              class="button"
+              href="https://github.com/InfiniteC0re/HLSR/"
+              target="_blank"
+              >GitHub <img src="/images/icons/github.svg"
+            /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/background.js?v1"></script>
+    <script>
+      (function () {
+        function onResize() {
+          if (
+            window.innerHeight -
+              (document.body.scrollHeight - window.innerHeight) <
+            document.querySelector("#page").clientHeight
+          ) {
+            document.querySelector("#wrap").classList.add("scrollable");
+          } else {
+            document.querySelector("#wrap").classList.remove("scrollable");
+          }
+        }
+
+        window.addEventListener("resize", onResize);
+        onResize();
+      })();
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <!-- <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    
+       ym(70924441, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/70924441" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
+    <!-- /Yandex.Metrika counter -->
+  </body>
 </html>
