@@ -47,7 +47,7 @@
           <div class="info">
             <div id="project-logo"></div>
             <div id="project-name">HLSR</div>
-            <div id="project-version">BETA</div>
+            <!-- <div id="project-version">BETA</div> -->
           </div>
           <p>Change the way you feel speedruns</p>
         </div>
@@ -92,11 +92,11 @@
     <script>
       (function () {
         function onResize() {
-          if (
-            window.innerHeight -
-              (document.body.scrollHeight - window.innerHeight) <
-            document.querySelector("#page").clientHeight
-          ) {
+          let winHeight = window.innerHeight;
+          let scrollHeight = document.body.scrollHeight;
+          let pageHeight = document.querySelector("#page").clientHeight;
+
+          if (winHeight - (scrollHeight - winHeight) < pageHeight) {
             document.querySelector("#wrap").classList.add("scrollable");
           } else {
             document.querySelector("#wrap").classList.remove("scrollable");
