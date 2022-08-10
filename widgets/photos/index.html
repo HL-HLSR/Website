@@ -36,6 +36,7 @@
         justify-content: right;
         align-items: flex-start;
         padding: 16px;
+        position: relative;
       }
 
       #photos {
@@ -67,29 +68,31 @@
         margin-left: auto;
       }
 
+      #app.logo .container::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 48px;
+        height: 48px;
+        margin: 16px;
+        background-image: url(../../images/lambdageneration.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
       .author {
-        /* position: absolute;
-        bottom: 6px;
-        left: 0;
-        font-weight: bold;
-        padding: 6px 16px;
-        background-color: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(12px);
-        color: #fff;
-        z-index: 999;
-        font-size: 14px;
-        border-radius: 0 8px 0 0; */
         text-align: center;
         font-weight: bold;
-        font-size: 24px;
+        font-size: 28px;
         color: #fff;
-        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-        background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), radial-gradient(#0000004C, transparent);
-        padding: 6px 12px;
+        /* text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4); */
+        background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), linear-gradient(#0000002c, #0000002c);
+        padding: 8px 16px;
         padding-top: 6px;
         border-radius: 4px;
         margin-top: 10px;
-        width: fit-content;
         margin-left: auto;
       }
 
@@ -99,8 +102,12 @@
       }
 
       .photo.hide {
-        /* animation: photo-disappear 0.9s ease forwards; */
-        /* display: block; */
+        animation: photo-disappear 0.9s ease forwards;
+        display: block;
+        position: absolute;
+        position: absolute;
+        right: 0;
+        top: 0;
       }
 
       @keyframes photo-appear {
@@ -122,12 +129,12 @@
 
       @keyframes photo-disappear {
         0% {
-          /* transform: translate3d(0, 0, 0); */
+          transform: translate3d(0, 0, 0);
           opacity: 1;
         }
 
         100% {
-          /* transform: translate3d(0, 0, -300px); */
+          transform: translate3d(0, 0, -300px);
           opacity: 0;
         }
       }
@@ -139,10 +146,11 @@
         <div
           class="photo"
           v-for="(image, index) in images"
-          :class="{show: image.show}"
+          :class="{show: image.show, hide: image.hide}"
         >
           <div class="container">
-            <img :src="image.url" onerror="if (this.src != 'error.jpg') this.src = 'http://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';" />
+            <img :src="image.url" @error="imgError" />
+            <!-- <div class="author">lambdageneration.com</div> -->
             <div class="author">{{image.author}}</div>
           </div>
         </div>
@@ -167,8 +175,11 @@
             prevImage.show = false;
             prevImage.hide = true;
 
-            img.show = true;
-            prevImage.hide = false;
+            img.hide = false;
+            
+            this.$nextTick(() => {
+              img.show = true;
+            });
           } else {
             img.show = true;
           }
@@ -182,6 +193,9 @@
           if (this.currentImage + 1 >= this.images.length) this.showByIndex(0);
           else this.showByIndex(this.currentImage + 1);
         },
+        imgError(e) {
+          e.target.src = 'http://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';
+        },
         resetAll() {
           this.images.forEach((image) => {
             image.show = false;
@@ -192,12 +206,15 @@
       mounted() {
         var client = io("http://194.87.95.20:4001/");
 
+        if (!location.href.includes("nologo")) {
+          document.querySelector("#app").classList.add("logo");
+        }
+
         client.on("posts-update", (posts) => {
           let previousUrl = this.images[this.currentImage]
             ? this.images[this.currentImage].url
             : "";
           this.posts = posts;
-          // this.images = [];
           console.log(this.posts);
 
           posts.forEach((post) => {
@@ -221,7 +238,7 @@
 
         setInterval(() => {
           this.showNext();
-        }, 8000);
+        }, 2000);
       },
     });
   </script>
