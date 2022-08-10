@@ -1,0 +1,242 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+@font-face {
+    font-family: "HL2";
+    src: url(/assets/fonts/HL2.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "BahnschriftFB";
+    src: url(/assets/fonts/Bahnschrift.ttf) format("truetype");
+}
+
+:root {
+    --color: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Trebuchet MS", "HL2", Arial, Helvetica, sans-serif;
+}
+
+body {
+    overflow: hidden;
+    background: transparent;
+    /* background: #d13131; */
+}
+
+#app {
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.percent {
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 50%;
+    background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), radial-gradient(#0000004C, transparent);
+    width: 200px;
+    height: 200px;
+}
+
+.percent h2 {
+    transform: translate(-50%, 50%);
+    font-size: 2.8rem;
+    position: absolute;
+    color: var(--color);
+    left: 50%;
+    bottom: 50%;
+    margin-bottom: 5px;
+}
+
+svg {
+    position: relative;
+    z-index: 1000;
+}
+
+svg>circle {
+    transform-origin: 50% 50%;
+    transform: rotateZ(270deg);
+    stroke: var(--color);
+}
+
+h3#hint {
+    transform: translate(-50%, -50%);
+    font-size: 1.4rem;
+    position: absolute;
+    color: var(--color);
+    left: 50%;
+    top: 50%;
+    margin-top: 38px;
+    font-family: "Trebuchet MS", "Bahnschrift", "BahnschriftFB", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-stretch: semi-condensed;
+    text-transform: uppercase;
+}
+
+.goals {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.18rem;
+    box-sizing: border-box;
+    padding: 0 28px;
+    color: rgba(255, 255, 255, 1);
+    text-transform: uppercase;
+}
+
+.goals * {
+    font-family: "Trebuchet MS", "Bahnschrift", "BahnschriftFB", Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+.goals .goal {
+    display: flex;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+}
+
+@keyframes goal-appear-left {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: visible;
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes goal-appear-right {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: visible;
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.goals .goal.main {
+    opacity: 0.8;
+}
+
+.goals .goal.alt {
+    opacity: 0.4;
+}
+
+.goals.show .goal:nth-child(2) {
+    animation: goal-appear-left 1s forwards;
+}
+
+.goals.show .goal:nth-child(3) {
+    animation: goal-appear-right 1s forwards;
+}
+
+.goals.hide .goal:nth-child(2) {
+    animation: goal-appear-left 1s forwards reverse;
+}
+
+.goals.hide .goal:nth-child(3) {
+    animation: goal-appear-right 1s forwards reverse;
+}
+
+.goals .goal .value {
+    margin-left: auto;
+}
+
+#app.glitch .glitch {
+    animation: glitch-small 0.8s linear infinite;
+}
+
+#app.shake .peak {
+    backface-visibility: hidden;
+    animation: shake 0.8s linear infinite;
+}
+
+.peak {
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), rgba(0, 0, 0, 0.1);
+    padding: 4px 6px;
+    box-sizing: border-box;
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    width: fit-content;
+    border-radius: 4px;
+    margin: auto;
+    margin-bottom: 8px;
+}
+
+#peak-value {
+    font-size: 1.3rem;
+}
+
+.background {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.background svg {
+    width: 130px;
+}
+
+#canvas-background {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0), #000, rgba(0, 0, 0, 0));
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, -4px, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-3px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(2px, 0, 0);
+    }
+}
+
+@keyframes glitch-small {
+    0% {
+        text-shadow: 1px 1px 0px #ff7700, -1px -1px 0 #dbaf00;
+    }
+
+    33% {
+        text-shadow: 2px 3px 0px #ff7700, -3px -2px 0 #dbaf00;
+    }
+
+    66% {
+        text-shadow: -1px -1px 0px #ff7700, 1px 1px 0 #dbaf00;
+    }
+
+    to {
+        text-shadow: 2px 1px 0px #ff7700, -1px -2px 0 #dbaf00;
+    }
+}

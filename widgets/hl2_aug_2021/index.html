@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <title>HL2 Online Widget</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+      @font-face {
+        font-family: "HL2";
+        src: url(/assets/fonts/HL2.ttf) format("truetype");
+      }
+
+      @font-face {
+        font-family: "Bahnschrift_Fallback";
+        src: url(/assets/fonts/Bahnschrift.ttf) format("truetype");
+      }
+
+      :root {
+        --color: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: HL2, Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        overflow: hidden;
+        background: transparent;
+        /* background: #d13131; */
+      }
+
+      #app {
+        font-size: 2rem;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+      }
+
+      .percent {
+        position: relative;
+        height: fit-content;
+        width: fit-content;
+        border-radius: 50%;
+        background: radial-gradient(#00000045, transparent);
+        width: 200px;
+        height: 200px;
+      }
+
+      .percent h2 {
+        transform: translate(-50%, 50%);
+        font-size: 2.8rem;
+        position: absolute;
+        color: var(--color);
+        left: 50%;
+        bottom: 50%;
+        margin-bottom: 5px;
+      }
+
+      svg {
+        position: relative;
+        z-index: 1000;
+      }
+
+      svg > circle {
+        transform-origin: 50% 50%;
+        transform: rotateZ(270deg);
+        stroke: var(--color);
+      }
+
+      h3#hint {
+        transform: translate(-50%, -50%);
+        font-size: 1.4rem;
+        position: absolute;
+        color: var(--color);
+        left: 50%;
+        top: 50%;
+        margin-top: 38px;
+        font-family: "Bahnschrift", "Bahnschrift_Fallback", Arial, Helvetica,
+          sans-serif;
+        font-weight: bold;
+        font-stretch: semi-condensed;
+        text-transform: uppercase;
+      }
+
+      .goals {
+        display: flex;
+        flex-direction: column;
+        font-size: 1.3rem;
+        box-sizing: border-box;
+        padding: 0 1.8rem;
+        color: rgba(255, 255, 255, 1);
+        text-transform: uppercase;
+      }
+
+      .goals * {
+        font-family: "Bahnschrift", "Bahnschrift_Fallback", Arial, Helvetica,
+          sans-serif;
+        font-weight: bold;
+        font-stretch: semi-condensed;
+        text-transform: uppercase;
+      }
+
+      .goals .goal {
+        display: flex;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+        transition: 0.2s ease;
+      }
+
+      @keyframes goal-appear-left {
+        0% {
+          transform: translateX(-100%);
+          opacity: 0;
+          visibility: visible;
+        }
+
+        100% {
+          transform: translateX(0%);
+        }
+      }
+
+      @keyframes goal-appear-right {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+          visibility: visible;
+        }
+
+        100% {
+          transform: translateX(0%);
+        }
+      }
+
+      .goals .goal.main {
+        opacity: 0.8;
+      }
+
+      .goals .goal.alt {
+        opacity: 0.4;
+      }
+
+      .goals.show .goal:nth-child(2) {
+        animation: goal-appear-left 1s forwards;
+      }
+
+      .goals.show .goal:nth-child(3) {
+        animation: goal-appear-right 1s forwards;
+      }
+
+      .goals.hide .goal:nth-child(2) {
+        animation: goal-appear-left 1s forwards reverse;
+      }
+
+      .goals.hide .goal:nth-child(3) {
+        animation: goal-appear-right 1s forwards reverse;
+      }
+
+      .goals .goal .value {
+        margin-left: auto;
+      }
+
+      #app.glitch .glitch {
+        animation: glitch-small 0.8s linear infinite;
+      }
+
+      #app.shake .peak {
+        backface-visibility: hidden;
+        animation: shake 0.8s linear infinite;
+      }
+
+      .peak {
+        font-size: 1.1rem;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 2px 6px;
+        padding-top: 6px;
+        box-sizing: border-box;
+        color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        width: fit-content;
+        border-radius: 4px;
+        margin: auto;
+        margin-bottom: 0.5rem;
+      }
+
+      #peak-value {
+        font-size: 1.3rem;
+      }
+
+      .background {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .background svg {
+        width: 130px;
+      }
+
+      #canvas-background {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+        -webkit-mask-image: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0),
+          #000,
+          rgba(0, 0, 0, 0)
+        );
+      }
+
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translate3d(-1px, 0, 0);
+        }
+
+        20%,
+        80% {
+          transform: translate3d(2px, -4px, 0);
+        }
+
+        30%,
+        50%,
+        70% {
+          transform: translate3d(-3px, 0, 0);
+        }
+
+        40%,
+        60% {
+          transform: translate3d(2px, 0, 0);
+        }
+      }
+
+      @keyframes glitch-small {
+        0% {
+          text-shadow: 1px 1px 0px #ff7700, -1px -1px 0 #dbaf00;
+        }
+        33% {
+          text-shadow: 2px 3px 0px #ff7700, -3px -2px 0 #dbaf00;
+        }
+        66% {
+          text-shadow: -1px -1px 0px #ff7700, 1px 1px 0 #dbaf00;
+        }
+        to {
+          text-shadow: 2px 1px 0px #ff7700, -1px -2px 0 #dbaf00;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="percent">
+        <div class="background">
+          <svg
+            xmlns:svg="http://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.0"
+            viewBox="0 0 176.52748 185.1386"
+          >
+            <defs id="defs4">
+              <marker
+                refX="0"
+                refY="0"
+                orient="auto"
+                style="overflow: visible"
+                id="Arrow1Mstart"
+              >
+                <path
+                  d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+                  transform="matrix(0.4,0,0,0.4,4,0)"
+                  style="
+                    fill-rule: evenodd;
+                    stroke: #000000;
+                    stroke-width: 1pt;
+                    marker-start: none;
+                  "
+                  id="path3206"
+                />
+              </marker>
+              <marker
+                refX="0"
+                refY="0"
+                orient="auto"
+                style="overflow: visible"
+                id="Arrow1Mend"
+              >
+                <path
+                  d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+                  transform="matrix(-0.4,0,0,-0.4,-4,0)"
+                  style="
+                    fill-rule: evenodd;
+                    stroke: #000000;
+                    stroke-width: 1pt;
+                    marker-start: none;
+                  "
+                  id="path3209"
+                />
+              </marker>
+              <marker
+                refX="0"
+                refY="0"
+                orient="auto"
+                style="overflow: visible"
+                id="Arrow1Lstart"
+              >
+                <path
+                  d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+                  transform="matrix(0.8,0,0,0.8,10,0)"
+                  style="
+                    fill-rule: evenodd;
+                    stroke: #000000;
+                    stroke-width: 1pt;
+                    marker-start: none;
+                  "
+                  id="path3200"
+                />
+              </marker>
+            </defs>
+            <path
+              d="M 47.243238,12.929372 L 47.243238,38.836954 L 68.578895,38.836954 L 77.341753,65.887518 L 12.191803,166.85089 L 44.195288,166.85089 L 90.676538,98.271996 L 121.15605,175.23276 L 169.16127,159.993 L 161.5414,136.37138 L 139.44375,143.22927 L 87.628587,12.929372 L 47.243238,12.929372 z "
+              style="
+                fill: #000;
+                fill-opacity: 0.15;
+                fill-rule: evenodd;
+                stroke: none;
+                stroke-width: 1px;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+                stroke-opacity: 1;
+              "
+            />
+          </svg>
+        </div>
+        <svg
+          class="progress-ring"
+          viewBox="0 0 140 140"
+          width="200"
+          height="200"
+        >
+          <defs>
+            <linearGradient
+              id="linear"
+              x1="40%"
+              y1="0%"
+              x2="60%"
+              y2="0%"
+              spreadMethod="pad"
+            >
+              <stop offset="0%" stop-color="#05a" />
+              <stop offset="100%" stop-color="#0a5" />
+            </linearGradient>
+          </defs>
+
+          <circle
+            id="circle"
+            class="progress-ring__circle"
+            stroke-width="6"
+            fill="transparent"
+            stroke-linecap="round"
+            shape-rendering="geometricPrecision"
+            r="60"
+            cx="70"
+            cy="70"
+          />
+        </svg>
+        <h2 id="count" class="glitch"></h2>
+        <h3 id="hint" class="glitch" data-locale="#PLAYERS" hidden></h3>
+        <div class="goals show">
+          <div class="peak">
+            <span data-locale="#PEAK"></span> <b id="peak-value">0</b>
+          </div>
+          <div class="goal main">
+            <p class="name" data-locale="#GOAL1"></p>
+            <p class="value">6,882</p>
+          </div>
+          <div class="goal alt">
+            <p class="name" data-locale="#GOAL2"></p>
+            <p class="value">13,216</p>
+          </div>
+        </div>
+      </div>
+      <canvas id="canvas-background"></canvas>
+    </div>
+
+    <script>
+      window.count = 0;
+
+      let localization = {
+        "#GOAL1": {
+          en: "Goal 1:",
+          ru: "Цель 1:",
+        },
+        "#GOAL2": {
+          en: "Goal 2:",
+          ru: "Цель 2:",
+        },
+        "#PEAK": {
+          en: "Peak: ",
+          ru: "Пик: ",
+        },
+        "#PLAYERS": {
+          en: "Players",
+          ru: "Игроков",
+        },
+      };
+
+      (function () {
+        let timeout = 1000 * 60 * 5.4;
+        let lang = window.location.href.includes("#ru") ? "ru" : "en";
+
+        let app = document.querySelector("#app");
+        let hint = document.querySelector("#hint");
+        let count = document.querySelector("#count");
+        let circle = document.querySelector("#circle");
+        if (!app || !circle || !count || !hint) return;
+
+        let radius = parseInt(circle.getAttribute("r"));
+        if (isNaN(radius)) return;
+
+        let circumference = radius * 2 * Math.PI;
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+
+        function numberWithCommas(x) {
+          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        let confettiSettings = { target: "canvas-background", clock: 15 };
+        let confetti = new ConfettiGenerator(confettiSettings);
+        let confettiStarted = false;
+        let peakValue = 0;
+
+        let originalColor =
+          document.documentElement.style.getPropertyValue("--color");
+
+        function ApplyLocalization() {
+          let toLocalizate = document.querySelectorAll("*[data-locale]");
+          let keys = Object.keys(localization);
+          toLocalizate.forEach((elem) => {
+            let key = elem.getAttribute("data-locale");
+            if (localization[key]) {
+              elem.innerHTML = localization[key][lang];
+            }
+          });
+        }
+
+        ApplyLocalization();
+
+        function ToggleGoals() {
+          let goals = document.querySelector(".goals");
+
+          let reverse = goals.classList.contains("hide");
+          if (reverse) goals.classList.toggle("hide");
+          else goals.classList.toggle("show");
+          goals.offsetWidth = goals.offsetWidth; // a hack to restart an animation
+          if (reverse) goals.classList.toggle("show");
+          else goals.classList.toggle("hide");
+        }
+
+        function ToggleGoalsTimer() {
+          setTimeout(() => {
+            ToggleGoals();
+
+            setTimeout(() => {
+              ToggleGoalsTimer(ToggleGoals());
+            }, 20 * 1000);
+          }, 15 * 1000);
+        }
+
+        ToggleGoalsTimer();
+
+        function SetActiveGoal(count) {
+          let goals = document.querySelectorAll(".goal");
+
+          if (count >= 6882) {
+            goals[0].classList.remove("main");
+            goals[0].classList.add("alt");
+            goals[1].classList.add("main");
+            goals[1].classList.remove("alt");
+          } else {
+            goals[0].classList.add("main");
+            goals[0].classList.remove("alt");
+            goals[1].classList.remove("main");
+            goals[1].classList.add("alt");
+          }
+        }
+
+        function Update() {
+          function MakeRequest() {
+            let playerCount = 16101;
+            let goals = document.querySelectorAll(".goal");
+
+            if (playerCount >= 6882) {
+              if (!confettiStarted) {
+                confetti.render();
+                confettiStarted = true;
+              }
+            }
+
+            if (playerCount >= 13216 && playerCount >= peakValue) {
+              document.querySelector("#app").classList.add("glitch");
+              document.querySelector("#app").classList.add("shake");
+              document.documentElement.style.setProperty("--color", "#ffb700");
+            } else {
+              document.querySelector("#app").classList.remove("glitch");
+              document.documentElement.style.setProperty(
+                "--color",
+                originalColor
+              );
+            }
+
+            SetActiveGoal(playerCount);
+            peakValue = Math.max(peakValue, playerCount);
+
+            hint.removeAttribute("hidden");
+            count.innerHTML = numberWithCommas(playerCount);
+
+            circle.style.strokeDashoffset = `${circumference * 2}`;
+            document.querySelector("#peak-value").innerHTML =
+              numberWithCommas(peakValue);
+          }
+          circle.style.transition = `0.5s ease`;
+          circle.style.strokeDashoffset = `${circumference}`;
+
+          setTimeout(MakeRequest, 500); // delay before request
+        }
+
+        Update();
+      })();
+    </script>
+  </body>
+</html>

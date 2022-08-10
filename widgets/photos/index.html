@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script
+      src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+      integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+      crossorigin="anonymous"
+    ></script>
+    <title>Виджет</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Trebuchet MS", Nunito, Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      #app {
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        justify-content: right;
+        align-items: flex-start;
+        padding: 16px;
+      }
+
+      #photos {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        position: relative;
+      }
+
+      .photo {
+        background-image: var(--image);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+
+      img {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 4px;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        margin-left: auto;
+      }
+
+      .author {
+        /* position: absolute;
+        bottom: 6px;
+        left: 0;
+        font-weight: bold;
+        padding: 6px 16px;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(12px);
+        color: #fff;
+        z-index: 999;
+        font-size: 14px;
+        border-radius: 0 8px 0 0; */
+        text-align: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: #fff;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), radial-gradient(#0000004C, transparent);
+        padding: 6px 12px;
+        padding-top: 6px;
+        border-radius: 4px;
+        margin-top: 10px;
+        width: fit-content;
+        margin-left: auto;
+      }
+
+      .photo.show {
+        animation: photo-appear 1.2s ease forwards;
+        display: block;
+      }
+
+      .photo.hide {
+        /* animation: photo-disappear 0.9s ease forwards; */
+        /* display: block; */
+      }
+
+      @keyframes photo-appear {
+        0% {
+          transform: translate3d(0, 0, -8000px);
+          opacity: 0;
+        }
+
+        80% {
+          transform: translate3d(0, 0, 30px);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translate3d(0, 0, 0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes photo-disappear {
+        0% {
+          /* transform: translate3d(0, 0, 0); */
+          opacity: 1;
+        }
+
+        100% {
+          /* transform: translate3d(0, 0, -300px); */
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="photos">
+        <div
+          class="photo"
+          v-for="(image, index) in images"
+          :class="{show: image.show}"
+        >
+          <div class="container">
+            <img :src="image.url" onerror="if (this.src != 'error.jpg') this.src = 'http://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';" />
+            <div class="author">{{image.author}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        posts: [],
+        images: [],
+        currentImage: -1,
+      },
+      methods: {
+        showByIndex(index) {
+          let img = this.images[index];
+          if (!img) return;
+
+          if (this.currentImage != -1) {
+            let prevImage = this.images[this.currentImage];
+            prevImage.show = false;
+            prevImage.hide = true;
+
+            img.show = true;
+            prevImage.hide = false;
+          } else {
+            img.show = true;
+          }
+
+          this.currentImage = index;
+        },
+        showNext() {
+          if (this.currentImage == -1) return;
+          if (this.images.length < 2) return;
+
+          if (this.currentImage + 1 >= this.images.length) this.showByIndex(0);
+          else this.showByIndex(this.currentImage + 1);
+        },
+        resetAll() {
+          this.images.forEach((image) => {
+            image.show = false;
+            image.hide = false;
+          });
+        },
+      },
+      mounted() {
+        var client = io("http://194.87.95.20:4001/");
+
+        client.on("posts-update", (posts) => {
+          let previousUrl = this.images[this.currentImage]
+            ? this.images[this.currentImage].url
+            : "";
+          this.posts = posts;
+          // this.images = [];
+          console.log(this.posts);
+
+          posts.forEach((post) => {
+            post.urls.forEach((url) => {
+              let res = this.images.find((x) => x.url.startsWith(url));
+
+              if (!res) {
+                this.images.push({
+                  show: false,
+                  hide: false,
+                  author: post.author.displayName,
+                  url: url + "?size=full",
+                });
+              }
+            });
+          });
+
+          if (this.currentImage == -1) this.showByIndex(0);
+          //this.images = this.images.slice(0, 10);
+        });
+
+        setInterval(() => {
+          this.showNext();
+        }, 8000);
+      },
+    });
+  </script>
+</html>
