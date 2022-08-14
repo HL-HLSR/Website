@@ -245,12 +245,14 @@
           let db = await res.json();
 
           db.forEach((post) => {
-            this.images.push({
-              show: false,
-              animate: this.images.length == 0,
-              author: post.author.displayName,
-              url: url + "?size=normal",
-              postId: post.postId,
+            post.urls.forEach((url) => {
+              this.images.push({
+                show: false,
+                animate: this.images.length == 0,
+                author: post.author.displayName,
+                url: url + "?size=normal",
+                postId: post.postId,
+              });
             });
           });
 
