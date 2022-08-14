@@ -241,7 +241,7 @@
         }
 
         // static database
-        fetch("db.json", async (res) => {
+        fetch("db.json").then(async (res) => {
           let db = await res.json();
 
           db.forEach((post) => {
