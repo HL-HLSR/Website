@@ -21,7 +21,6 @@
 
       body {
         overflow: hidden;
-		animation: widget-appear 2s;
       }
 	  
 	  a {
@@ -123,20 +122,6 @@
 		right: unset;
 		top: unset;
 	  }
-	  
-	  @keyframes widget-appear {
-		0% {
-			opacity: 0;
-		}
-		
-		60% {
-			opacity: 0;
-		}
-		
-		100% {
-			opacity: 1;
-		}
-	  }
 
       @keyframes photo-appear {
         0% {
@@ -179,7 +164,7 @@
         <div
           class="photo"
           v-for="(image, index) in images"
-          :class="{show: image.show, hide: !image.show}"
+          :class="{show: image.show && image.animate, hide: !image.show && image.animate}"
         >
           <a :href="'https://community.lambdageneration.com/post/' + image.postId" target="_blank" class="container">
             <img :src="image.url" @error="imgError" />
@@ -204,6 +189,12 @@
 
           if (this.currentImage != -1) {
             let prevImage = this.images[this.currentImage];
+			
+			// turn on animations for them
+			img.animate = true;
+			prevImage.animate = true;
+			
+			// add classes
             prevImage.show = false;
 			img.show = true;
           } else {
@@ -252,6 +243,7 @@
               if (!res) {
                 this.images.push({
                   show: false,
+				  animate: this.images.length == 0,
                   author: post.author.displayName,
                   url: url + "?size=normal",
 				  postId: post.postId
