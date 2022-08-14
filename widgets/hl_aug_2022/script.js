@@ -36,7 +36,7 @@ const formatNumber = (x) => {
 
 // main code
 (function () {
-  window.debug = { enabled: false, online: 0 };
+  window.debug = { enabled: true, online: 12280 };
 
   const lang = window.location.href.includes("#ru") ? "ru" : "en";
 
@@ -124,20 +124,18 @@ const formatNumber = (x) => {
 
   function Update() {
     async function MakeRequest() {
-      const res = await fetch(
-        `${settings.corsProxy}https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1?appid=${settings.appid}`,
-        {
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        }
-      );
+      // const res = await fetch(
+        // `${settings.corsProxy}https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1?appid=${settings.appid}`,
+        // {
+          // headers: {
+            // "Cache-Control": "no-cache",
+          // },
+        // }
+      // );
 
-      const resJson = await res.json();
+      // const resJson = await res.json();
 
-      let playerCount = window.debug.enabled
-        ? window.debug.online
-        : resJson.response.player_count;
+      let playerCount = window.debug.online;
 
       if (playerCount >= settings.goals.low) {
         if (!confettiStarted) {
@@ -160,14 +158,14 @@ const formatNumber = (x) => {
 
       hint.removeAttribute("hidden");
       count.innerHTML = formatNumber(playerCount);
-      circle.style.transition = `stroke-dashoffset ${settings.updateInterval}ms linear, color 0.2s ease`;
+      //circle.style.transition = `stroke-dashoffset ${settings.updateInterval}ms linear, color 0.2s ease`;
       circle.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
-      setTimeout(Update, settings.updateInterval + 500);
+      //setTimeout(Update, settings.updateInterval + 500);
     }
 
-    circle.style.transition = `0.5s ease`;
+    //circle.style.transition = `0.5s ease`;
     circle.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
