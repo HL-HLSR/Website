@@ -260,7 +260,7 @@
             post.urls.forEach((url) => {
               this.images.push({
                 show: false,
-                animate: this.images.length == 0,
+                animate: false,
                 author: post.author.displayName,
                 url: url + "?size=normal",
                 postId: post.postId,
@@ -269,6 +269,7 @@
           });
 
           this.images = shuffle(this.images);
+          this.images[0].animate = true;
 
           this.$nextTick(() => {
             this.showByIndex(0);
