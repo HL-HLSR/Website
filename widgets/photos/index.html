@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script
       src="https://cdn.socket.io/3.1.3/socket.io.min.js"
@@ -22,12 +16,17 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Trebuchet MS", Nunito, Arial, Helvetica, sans-serif;
+        font-family: "Trebuchet MS", Arial, sans-serif;
       }
 
       body {
         overflow: hidden;
+		animation: widget-appear 2s;
       }
+	  
+	  a {
+		text-decoration: none;
+	  }
 
       #app {
         height: 100vh;
@@ -54,10 +53,6 @@
       }
 
       .photo {
-        background-image: var(--image);
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
         border-radius: 8px;
         display: none;
       }
@@ -73,6 +68,7 @@
         max-height: 80vh;
         border-radius: 4px;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+		image-orientation: from-image;
       }
 
       #app.logo .container::before {
@@ -127,31 +123,50 @@
 		right: unset;
 		top: unset;
 	  }
+	  
+	  @keyframes widget-appear {
+		0% {
+			opacity: 0;
+		}
+		
+		60% {
+			opacity: 0;
+		}
+		
+		100% {
+			opacity: 1;
+		}
+	  }
 
       @keyframes photo-appear {
         0% {
           transform: translate3d(0, 0, -8000px);
           opacity: 0;
+		  pointer-events: none;
         }
 
         80% {
           transform: translate3d(0, 0, 30px);
           opacity: 1;
+		  pointer-events: unset;
         }
 
         100% {
           transform: translate3d(0, 0, 0);
           opacity: 1;
+		  pointer-events: unset;
         }
       }
 
       @keyframes photo-disappear {
         0% {
+		  pointer-events: unset;
           transform: translate3d(0, 0, 0);
           opacity: 1;
         }
 
         100% {
+		  pointer-events: none;
           transform: translate3d(0, 0, -300px);
           opacity: 0;
         }
@@ -164,12 +179,12 @@
         <div
           class="photo"
           v-for="(image, index) in images"
-          :class="{show: image.show, hide: image.hide}"
+          :class="{show: image.show, hide: !image.show}"
         >
-          <div class="container">
+          <a :href="'https://community.lambdageneration.com/post/' + image.postId" target="_blank" class="container">
             <img :src="image.url" @error="imgError" />
             <div class="author">{{image.author}}</div>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -190,13 +205,7 @@
           if (this.currentImage != -1) {
             let prevImage = this.images[this.currentImage];
             prevImage.show = false;
-            prevImage.hide = true;
-            img.hide = false;
-			
-			// wait for a next tick so the animation will play
-            this.$nextTick(() => {
-              img.show = true;
-            });
+			img.show = true;
           } else {
             img.show = true;
           }
@@ -212,12 +221,6 @@
         },
         imgError(e) {
           e.target.src = 'https://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';
-        },
-        resetAll() {
-          this.images.forEach((image) => {
-            image.show = false;
-            image.hide = false;
-          });
         },
       },
       mounted() {
@@ -240,7 +243,7 @@
             ? this.images[this.currentImage].url
             : "";
           this.posts = posts;
-          console.log(this.posts);
+          //console.log(this.posts);
 
           posts.forEach((post) => {
             post.urls.forEach((url) => {
@@ -249,9 +252,9 @@
               if (!res) {
                 this.images.push({
                   show: false,
-                  hide: false,
                   author: post.author.displayName,
-                  url: url + "?size=full",
+                  url: url + "?size=normal",
+				  postId: post.postId
                 });
               }
             });
