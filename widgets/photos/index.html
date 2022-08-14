@@ -194,7 +194,7 @@
           else this.showByIndex(this.currentImage + 1);
         },
         imgError(e) {
-          e.target.src = 'http://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';
+          e.target.src = 'https://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';
         },
         resetAll() {
           this.images.forEach((image) => {
@@ -204,7 +204,7 @@
         },
       },
       mounted() {
-        var client = io("http://194.87.95.20:4001/");
+        var client = io("wss://api.hlsr.tk");
 
         if (!location.href.includes("nologo")) {
           document.querySelector("#app").classList.add("logo");
