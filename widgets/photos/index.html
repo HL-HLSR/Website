@@ -22,10 +22,10 @@
       body {
         overflow: hidden;
       }
-	  
-	  a {
-		text-decoration: none;
-	  }
+
+      a {
+        text-decoration: none;
+      }
 
       #app {
         height: 100vh;
@@ -36,19 +36,19 @@
         padding: 16px;
         position: relative;
       }
-	  
-	  #app.centered {
-		justify-content: center;
-		align-items: center;
-	  }
+
+      #app.centered {
+        justify-content: center;
+        align-items: center;
+      }
 
       #photos {
         transform-style: preserve-3d;
         perspective: 1000px;
         position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .photo {
@@ -67,7 +67,7 @@
         max-height: 80vh;
         border-radius: 4px;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-		image-orientation: from-image;
+        image-orientation: from-image;
       }
 
       #app.logo .container::before {
@@ -89,21 +89,27 @@
         font-weight: bold;
         font-size: 28px;
         color: #fff;
-        background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), linear-gradient(#0000002c, #0000002c);
+        background: repeating-linear-gradient(
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.1) 3px,
+            rgba(0, 0, 0, 0.1) 3px
+          ),
+          linear-gradient(#0000002c, #0000002c);
         padding: 8px 16px;
         padding-top: 6px;
         border-radius: 4px;
         margin-top: 10px;
         margin-left: auto;
       }
-	  
-	  #app.centered .author {
-		font-size: 24px;
-	  }
-	  
-	  #app.centername .author {
-		margin-left: 0;
-	  }
+
+      #app.centered .author {
+        font-size: 24px;
+      }
+
+      #app.centername .author {
+        margin-left: 0;
+      }
 
       .photo.show {
         animation: photo-appear 1.2s ease forwards;
@@ -114,44 +120,44 @@
         animation: photo-disappear 0.9s ease forwards;
         display: block;
         position: absolute;
-		right: 0;
-		top: 0;
+        right: 0;
+        top: 0;
       }
-	  
-	  #app.centered .photo.hide {
-		right: unset;
-		top: unset;
-	  }
+
+      #app.centered .photo.hide {
+        right: unset;
+        top: unset;
+      }
 
       @keyframes photo-appear {
         0% {
           transform: translate3d(0, 0, -8000px);
           opacity: 0;
-		  pointer-events: none;
+          pointer-events: none;
         }
 
         80% {
           transform: translate3d(0, 0, 30px);
           opacity: 1;
-		  pointer-events: unset;
+          pointer-events: unset;
         }
 
         100% {
           transform: translate3d(0, 0, 0);
           opacity: 1;
-		  pointer-events: unset;
+          pointer-events: unset;
         }
       }
 
       @keyframes photo-disappear {
         0% {
-		  pointer-events: unset;
+          pointer-events: unset;
           transform: translate3d(0, 0, 0);
           opacity: 1;
         }
 
         100% {
-		  pointer-events: none;
+          pointer-events: none;
           transform: translate3d(0, 0, -300px);
           opacity: 0;
         }
@@ -166,7 +172,11 @@
           v-for="(image, index) in images"
           :class="{show: image.show && image.animate, hide: !image.show && image.animate}"
         >
-          <a :href="'https://community.lambdageneration.com/post/' + image.postId" target="_blank" class="container">
+          <a
+            :href="'https://community.lambdageneration.com/post/' + image.postId"
+            target="_blank"
+            class="container"
+          >
             <img :src="image.url" @error="imgError" />
             <div class="author">{{image.author}}</div>
           </a>
@@ -189,14 +199,14 @@
 
           if (this.currentImage != -1) {
             let prevImage = this.images[this.currentImage];
-			
-			// turn on animations for them
-			img.animate = true;
-			prevImage.animate = true;
-			
-			// add classes
+
+            // turn on animations for them
+            img.animate = true;
+            prevImage.animate = true;
+
+            // add classes
             prevImage.show = false;
-			img.show = true;
+            img.show = true;
           } else {
             img.show = true;
           }
@@ -211,49 +221,68 @@
           else this.showByIndex(this.currentImage + 1);
         },
         imgError(e) {
-          e.target.src = 'https://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png';
+          e.target.src =
+            "https://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-small.png";
         },
       },
       mounted() {
-        var client = io("wss://api.hlsr.tk");
+        // const client = io("wss://api.hlsr.tk");
 
         if (!location.href.includes("nologo")) {
           document.querySelector("#app").classList.add("logo");
         }
-		
-		if (location.href.includes("centered")) {
+
+        if (location.href.includes("centered")) {
           document.querySelector("#app").classList.add("centered");
         }
-		
-		if (location.href.includes("centername")) {
+
+        if (location.href.includes("centername")) {
           document.querySelector("#app").classList.add("centername");
         }
 
-        client.on("posts-update", (posts) => {
-          let previousUrl = this.images[this.currentImage]
-            ? this.images[this.currentImage].url
-            : "";
-          this.posts = posts;
-          //console.log(this.posts);
+        // static database
+        fetch("db.json", async (res) => {
+          let db = await res.json();
 
-          posts.forEach((post) => {
-            post.urls.forEach((url) => {
-              let res = this.images.find((x) => x.url.startsWith(url));
-
-              if (!res) {
-                this.images.push({
-                  show: false,
-				  animate: this.images.length == 0,
-                  author: post.author.displayName,
-                  url: url + "?size=normal",
-				  postId: post.postId
-                });
-              }
+          db.forEach((post) => {
+            this.images.push({
+              show: false,
+              animate: this.images.length == 0,
+              author: post.author.displayName,
+              url: url + "?size=normal",
+              postId: post.postId,
             });
           });
 
-          if (this.currentImage == -1) this.showByIndex(0);
+          this.showByIndex(0);
         });
+
+        // socket.io code
+        // uncomment this if you're ready for the next wave of server crashes
+        // client.on("posts-update", (posts) => {
+        //   let previousUrl = this.images[this.currentImage]
+        //     ? this.images[this.currentImage].url
+        //     : "";
+        //   this.posts = posts;
+
+        //   posts.forEach((post) => {
+        //     post.urls.forEach((url) => {
+        //       let res = this.images.find((x) => x.url.startsWith(url));
+
+        //       if (!res) {
+        //         this.images.push({
+        //           show: false,
+        //           animate: this.images.length == 0,
+        //           author: post.author.displayName,
+        //           url: url + "?size=normal",
+        //           postId: post.postId,
+        //         });
+        //       }
+        //     });
+        //   });
+
+        //   if (this.currentImage == -1) this.showByIndex(0);
+        // });
 
         setInterval(() => {
           this.showNext();
