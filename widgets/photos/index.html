@@ -267,7 +267,10 @@
           });
 
           this.images = getShuffledArr(this.images);
-          this.showByIndex(0);
+
+          this.$nextTick(() => {
+            this.showByIndex(0);
+          });
         });
 
         // socket.io code
