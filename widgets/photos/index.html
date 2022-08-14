@@ -240,15 +240,17 @@
           document.querySelector("#app").classList.add("centername");
         }
 
-        // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-        const getShuffledArr = (arr) => {
-          const newArr = arr.slice();
-          for (let i = newArr.length - 1; i > 0; i--) {
-            const rand = Math.floor(Math.random() * (i + 1));
-            [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
+        // https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+        function shuffle(a) {
+          var j, x, i;
+          for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
           }
-          return newArr;
-        };
+          return a;
+        }
 
         // static database
         fetch("db.json").then(async (res) => {
@@ -266,10 +268,14 @@
             });
           });
 
-          this.images = getShuffledArr(this.images);
+          this.images = shuffle(this.images);
 
           this.$nextTick(() => {
             this.showByIndex(0);
+
+            setInterval(() => {
+              this.showNext();
+            }, 8000);
           });
         });
 
@@ -299,10 +305,6 @@
 
         //   if (this.currentImage == -1) this.showByIndex(0);
         // });
-
-        setInterval(() => {
-          this.showNext();
-        }, 8000);
       },
     });
   </script>
