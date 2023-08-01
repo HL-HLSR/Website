@@ -135,7 +135,7 @@ const formatNumber = (x) => {
 
       const resJson = await res.json();
 
-      let playerCount = window.debug.enabled ? window.debug.online : resJson.responce.player_count;
+      let playerCount = window.debug.enabled ? window.debug.online : resJson.response.player_count;
 
       if (playerCount >= settings.goals.low) {
         if (!confettiStarted) {
@@ -147,7 +147,7 @@ const formatNumber = (x) => {
       if (playerCount >= settings.goals.high && playerCount >= peakValue) {
         document.querySelector("#app").classList.add("glitch");
         document.querySelector("#app").classList.add("shake");
-        document.documentElement.style.setProperty("--color", "#ffb700");
+        document.documentElement.style.setProperty("--color", "#00FF2B");
       } else {
         document.querySelector("#app").classList.remove("glitch");
         document.documentElement.style.setProperty("--color", originalColor);
