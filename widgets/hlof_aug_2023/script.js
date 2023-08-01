@@ -44,6 +44,7 @@ const formatNumber = (x) => {
   const hint = document.querySelector("#hint");
   const count = document.querySelector("#count");
   const circle = document.querySelector("#circle");
+  const circleBg = document.querySelector("#background-circle");
 
   const radius = parseInt(circle.getAttribute("r"));
 
@@ -54,6 +55,7 @@ const formatNumber = (x) => {
 
   const circumference = radius * 2 * Math.PI;
   circle.style.strokeDasharray = `${circumference} ${circumference}`;
+  circleBg.style.strokeDasharray = `${circumference} ${circumference}`;
 
   const confetti = new ConfettiGenerator({
     target: "canvas-background",
@@ -160,6 +162,7 @@ const formatNumber = (x) => {
       count.innerHTML = formatNumber(playerCount);
       circle.style.transition = `stroke-dashoffset ${settings.updateInterval}ms linear, color 0.2s ease`;
       circle.style.strokeDashoffset = `${circumference * 2}`;
+	  circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
       setTimeout(Update, settings.updateInterval + 500);
@@ -167,6 +170,7 @@ const formatNumber = (x) => {
 
     circle.style.transition = `0.5s ease`;
     circle.style.strokeDashoffset = `${circumference}`;
+	circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
     setTimeout(MakeRequest, 500);

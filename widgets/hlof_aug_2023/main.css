@@ -65,8 +65,12 @@ svg {
 
 svg>circle {
     transform-origin: 50% 50%;
-    transform: rotateZ(270deg);
+    transform: rotateZ(270deg) scaleY(-1);
     stroke: var(--color);
+}
+
+svg>circle#background-circle {
+	opacity: 0.07;
 }
 
 h3#hint {
@@ -230,18 +234,18 @@ h3#hint {
 
 @keyframes glitch-small {
     0% {
-        text-shadow: 1px 1px 0px #ff7700, -1px -1px 0 #76DC00;
+        text-shadow: 1px 1px 0px #00FF2B, -1px -1px 0 #76DC00;
     }
 
     33% {
-        text-shadow: 2px 3px 0px #ff7700, -3px -2px 0 #76DC00;
+        text-shadow: 2px 3px 0px #00FF2B, -3px -2px 0 #76DC00;
     }
 
     66% {
-        text-shadow: -1px -1px 0px #ff7700, 1px 1px 0 #76DC00;
+        text-shadow: -1px -1px 0px #00FF2B, 1px 1px 0 #76DC00;
     }
 
     to {
-        text-shadow: 2px 1px 0px #ff7700, -1px -2px 0 #76DC00;
+        text-shadow: 2px 1px 0px #00FF2B, -1px -2px 0 #76DC00;
     }
 }
