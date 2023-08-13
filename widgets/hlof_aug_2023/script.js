@@ -149,6 +149,8 @@ const formatNumber = (x) => {
         document.querySelector("#app").classList.remove("glitch");
         document.documentElement.style.setProperty("--color", originalColor);
       }
+	  
+	  document.querySelector("#app").classList.add("shake");
 
       UpdateActiveGoal(playerCount);
       peakValue = Math.max(peakValue, playerCount);
