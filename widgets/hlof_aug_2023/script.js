@@ -1,6 +1,6 @@
 // settings
 const settings = {
-  updateInterval: 1000 * 60 * 5.4,
+  updateInterval: 1000 * 60 * 5.2,
   // corsProxy: "https://bold-grass-47ed.widget-cors.workers.dev/?",
   appid: "50",
   goals: {
@@ -160,7 +160,7 @@ const formatNumber = (x) => {
 	  circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
-      setTimeout(Update, settings.updateInterval + 500);
+      setTimeout(Update, settings.updateInterval + 250);
     }
 
     circle.style.transition = `0.5s ease`;
