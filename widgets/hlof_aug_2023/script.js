@@ -63,7 +63,7 @@ const formatNumber = (x) => {
   });
 
   let confettiStarted = false;
-  let peakValue = 0;
+  let peakValue = 5620;
 
   let originalColor =
     document.documentElement.style.getPropertyValue("--color");
