@@ -1,7 +1,7 @@
 // settings
 const settings = {
   updateInterval: 1000 * 60 * 5.4,
-  corsProxy: "https://bold-grass-47ed.widget-cors.workers.dev/?",
+  // corsProxy: "https://bold-grass-47ed.widget-cors.workers.dev/?",
   appid: "50",
   goals: {
     low: 620,
@@ -127,7 +127,7 @@ const formatNumber = (x) => {
   function Update() {
     async function MakeRequest() {
       const res = await fetch(
-        `${settings.corsProxy}https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1?appid=${settings.appid}`,
+        `https://api.hlsr.tk/hlof-stats`,
         {
           headers: {
             "Cache-Control": "no-cache",
@@ -137,7 +137,7 @@ const formatNumber = (x) => {
 
       const resJson = await res.json();
 
-      let playerCount = window.debug.enabled ? window.debug.online : resJson.response.player_count;
+      let playerCount = window.debug.enabled ? window.debug.online : resJson.online;
 
       if (playerCount >= settings.goals.low) {
         if (!confettiStarted) {
