@@ -63,7 +63,7 @@ const formatNumber = (x) => {
   });
 
   let confettiStarted = false;
-  let peakValue = 5620;
+  let peakValue = 5639;
 
   let originalColor =
     document.documentElement.style.getPropertyValue("--color");
@@ -126,13 +126,13 @@ const formatNumber = (x) => {
 
   function Update() {
     async function MakeRequest() {
-      const res = await fetch(
-        `https://api2.hlsr.tk/hlof-stats`
-      );
+      //const res = await fetch(
+      //  `https://api2.hlsr.tk/hlof-stats`
+      //);
 
-      const resJson = await res.json();
+      //const resJson = await res.json();
 
-      let playerCount = window.debug.enabled ? window.debug.online : resJson.online;
+      let playerCount = 5639;
 
       if (playerCount >= settings.goals.low) {
         if (!confettiStarted) {
@@ -162,7 +162,7 @@ const formatNumber = (x) => {
 	  circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
-      setTimeout(Update, settings.updateInterval + 250);
+      //setTimeout(Update, settings.updateInterval + 250);
     }
 
     circle.style.transition = `0.5s ease`;
@@ -170,7 +170,8 @@ const formatNumber = (x) => {
 	circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
-    setTimeout(MakeRequest, 500);
+	MakeRequest();
+    //setTimeout(MakeRequest, 500);
   }
 
   // initialize everything
