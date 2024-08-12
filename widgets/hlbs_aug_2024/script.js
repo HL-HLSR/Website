@@ -164,7 +164,7 @@ const formatNumber = (x) => {
       circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
-      //setTimeout(Update, settings.updateInterval + 250);
+      setTimeout(Update, settings.updateInterval + 250);
     }
 
     circle.style.transition = `0.5s ease`;
@@ -172,8 +172,8 @@ const formatNumber = (x) => {
     circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
-    MakeRequest();
-    //setTimeout(MakeRequest, 500);
+    setTimeout(MakeRequest, 500);
+    // MakeRequest();
   }
 
   // initialize everything
