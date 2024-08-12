@@ -152,7 +152,8 @@ const formatNumber = (x) => {
         document.documentElement.style.setProperty("--color", originalColor);
       }
 
-      document.querySelector("#app").classList.add("shake");
+      // Uncomment this when the event is over
+      // document.querySelector("#app").classList.add("shake");
 
       UpdateActiveGoal(playerCount);
       peakValue = Math.max(peakValue, playerCount);
