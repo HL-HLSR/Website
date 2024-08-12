@@ -63,7 +63,7 @@ const formatNumber = (x) => {
   });
 
   let confettiStarted = false;
-  let peakValue = 5639;
+  let peakValue = 0;
 
   let originalColor =
     document.documentElement.style.getPropertyValue("--color");
@@ -133,6 +133,7 @@ const formatNumber = (x) => {
       const resJson = await res.json();
 
       let playerCount = resJson.online;
+      peakValue = resJson.peak;
       // let playerCount = 5639;
 
       if (playerCount >= settings.goals.low) {
