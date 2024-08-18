@@ -1,11 +1,13 @@
 // settings
 const settings = {
-  updateInterval: 1000 * 60 * 5.2,
+  // updateInterval: 1000 * 60 * 5.2,
+  updateInterval: 1000 * 5,
   // corsProxy: "https://bold-grass-47ed.widget-cors.workers.dev/?",
   appid: "130",
   goals: {
     low: 620,
     high: 5000,
+    ultrahigh: 10000
   },
 };
 
@@ -18,6 +20,10 @@ const localisation = {
   "#GOAL2": {
     en: "Goal 2:",
     ru: "Цель 2:",
+  },
+  "#GOAL3": {
+    en: "Goal 3:",
+    ru: "Цель 3:",
   },
   "#PEAK": {
     en: "Peak: ",
@@ -36,7 +42,7 @@ const formatNumber = (x) => {
 
 // main code
 (function () {
-  window.debug = { enabled: false, online: 741 };
+  window.debug = { enabled: false, online: 741, peak: 921 };
 
   const lang = window.location.href.includes("#ru") ? "ru" : "en";
 
@@ -77,6 +83,9 @@ const formatNumber = (x) => {
     document.querySelector("#high_goal").innerHTML = formatNumber(
       settings.goals.high
     );
+    document.querySelector("#ultrahigh_goal").innerHTML = formatNumber(
+      settings.goals.ultrahigh
+    );
 
     toLocalise.forEach((elem) => {
       let key = elem.getAttribute("data-locale");
@@ -115,12 +124,18 @@ const formatNumber = (x) => {
   function UpdateActiveGoal(count) {
     let goals = document.querySelectorAll(".goal");
 
-    if (count >= settings.goals.low) {
-      goals[0].classList = "goal alt";
-      goals[1].classList = "goal main";
-    } else {
+    if (count < settings.goals.low) {
       goals[0].classList = "goal main";
       goals[1].classList = "goal alt";
+      goals[2].classList = "goal alt";
+    } else if (count >= settings.goals.low && count < settings.goals.ultrahigh) {
+      goals[0].classList = "goal alt";
+      goals[1].classList = "goal main";
+      goals[2].classList = "goal alt";
+    } else if (count >= settings.goals.ultrahigh) {
+      goals[0].classList = "goal alt";
+      goals[1].classList = "goal alt";
+      goals[2].classList = "goal main";
     }
   }
 
@@ -134,26 +149,39 @@ const formatNumber = (x) => {
 
       let playerCount = resJson.online;
       peakValue = resJson.peak;
+
+      if (window.debug && window.debug.enabled) {
+        playerCount = window.debug.online;
+        peakValue = window.debug.peak;
+      }
+
       // let playerCount = 5639;
 
-      if (playerCount >= settings.goals.low) {
+      if (peakValue >= settings.goals.low) {
         if (!confettiStarted) {
           confetti.render();
           confettiStarted = true;
         }
       }
 
+      const appElement = document.querySelector("#app");
+
+      if (peakValue >= settings.goals.high && !appElement.classList.contains("shake")) {
+        appElement.classList.add("shake");
+      }
+
       if (playerCount >= settings.goals.high && playerCount >= peakValue) {
-        document.querySelector("#app").classList.add("glitch");
-        document.querySelector("#app").classList.add("shake");
-        document.documentElement.style.setProperty("--color", "#00FF2B");
+        appElement.classList.add("glitch");
+        appElement.classList.add("shake");
+        document.documentElement.style.setProperty("--color", "#00b4ff");
       } else {
-        document.querySelector("#app").classList.remove("glitch");
+        // DO not disable shake animation here
+        appElement.classList.remove("glitch");
         document.documentElement.style.setProperty("--color", originalColor);
       }
 
       // Uncomment this when the event is over
-      // document.querySelector("#app").classList.add("shake");
+      // appElement.classList.add("shake");
 
       UpdateActiveGoal(playerCount);
       peakValue = Math.max(peakValue, playerCount);
