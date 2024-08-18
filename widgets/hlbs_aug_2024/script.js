@@ -215,7 +215,7 @@ const formatNumber = (x) => {
       count.innerHTML = formatNumber(playerCount);
       circle.style.transition = `stroke-dashoffset ${settings.updateInterval}ms linear, color 0.2s ease`;
       circle.style.strokeDashoffset = `${circumference * 2}`;
-      circleBg.style.strokeDashoffset = `${circumference * 2}`;
+      // circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
       setTimeout(Update, settings.updateInterval + 250);
@@ -223,7 +223,7 @@ const formatNumber = (x) => {
 
     circle.style.transition = `0.5s ease`;
     circle.style.strokeDashoffset = `${circumference}`;
-    circleBg.style.strokeDashoffset = `${circumference}`;
+    // circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
     setTimeout(MakeRequest, 500);

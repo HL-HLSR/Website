@@ -93,7 +93,7 @@ h3#hint {
     font-size: 1.1rem;
     box-sizing: border-box;
     padding: 0 24px;
-    color: #94B4FF;
+    color: var(--color);
     text-transform: uppercase;
 }
 
@@ -183,7 +183,8 @@ h3#hint {
     background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), rgba(0, 0, 0, 0.1);
     padding: 4px 6px;
     box-sizing: border-box;
-    color: rgba(148, 180, 255, .8);
+    color: var(--color);
+    opacity: 0.8;
     z-index: 9999;
     width: fit-content;
     border-radius: 4px;
