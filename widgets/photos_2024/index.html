@@ -282,6 +282,8 @@
         let previousUrl = this.images[this.currentImage]
           ? this.images[this.currentImage].url
           : "";
+
+        posts = shuffle(posts);
         this.posts = posts;
 
         posts.forEach((post) => {
@@ -303,9 +305,36 @@
         if (this.currentImage == -1) this.showByIndex(0);
       });
 
-      setInterval(() => {
-        this.showNext();
-      }, 8000);
+      if (window.requestAnimationFrame) {
+        // Make sure we don't switch slides while the tab is hidden
+        let timeUntilSwitch = 8.0;
+        let previousTime = Date.now();
+
+        let fnUpdate = () => {
+          let currentTime = Date.now();
+          let deltaTime = (currentTime - previousTime) / 1000;
+
+          // Limit max delta time to 0.2s
+          deltaTime = Math.min(deltaTime, 0.2);
+
+          previousTime = currentTime;
+          timeUntilSwitch -= deltaTime;
+
+          if (timeUntilSwitch <= 0.0) {
+            timeUntilSwitch = 8.0;
+            this.showNext();
+          }
+
+          window.requestAnimationFrame(fnUpdate);
+        };
+
+        window.requestAnimationFrame(fnUpdate);
+      } else {
+        // Can't request animation frame, use old approach
+        setInterval(() => {
+          this.showNext();
+        }, 8000);
+      }
     },
   });
 </script>
