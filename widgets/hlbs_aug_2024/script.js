@@ -42,7 +42,7 @@ const formatNumber = (x) => {
 
 // main code
 (function () {
-  window.debug = { enabled: false, online: 741, peak: 921 };
+  window.debug = { enabled: true, online: 5152, peak: 921 };
 
   const lang = window.location.href.includes("#ru") ? "ru" : "en";
 
