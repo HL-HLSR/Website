@@ -42,7 +42,7 @@ const formatNumber = (x) => {
 
 // main code
 (function () {
-  window.debug = { enabled: true, online: 10152, peak: 921 };
+  window.debug = { enabled: false, online: 10152, peak: 921 };
 
   const lang = window.location.href.includes("#ru") ? "ru" : "en";
 
@@ -161,6 +161,8 @@ const formatNumber = (x) => {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   }
 
+  let firstUpdate = true;
+
   function Update() {
     async function MakeRequest() {
       const res = await fetch(
@@ -213,16 +215,21 @@ const formatNumber = (x) => {
 
       hint.removeAttribute("hidden");
       count.innerHTML = formatNumber(playerCount);
-      circle.style.transition = `stroke-dashoffset ${settings.updateInterval}ms linear, color 0.2s ease`;
-      circle.style.strokeDashoffset = `${circumference * 2}`;
+      circle.style.transition = `stroke-dashoffset 400ms linear, color 0.2s ease`;
+
+      let progress = Math.min(Math.max((playerCount / settings.goals.ultrahigh), 0.0), 1.0);
+      circle.style.strokeDashoffset = `${circumference + circumference * progress}`;
       // circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
       setTimeout(Update, settings.updateInterval + 250);
     }
 
-    circle.style.transition = `0.5s ease`;
-    circle.style.strokeDashoffset = `${circumference}`;
+    if (firstUpdate) {
+      circle.style.transition = `0.5s ease`;
+      circle.style.strokeDashoffset = `${circumference}`;
+      firstUpdate = false;
+    }
     // circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request

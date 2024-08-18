@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="main.css?v=5">
+        <link rel="stylesheet" href="main.css?v=6">
         <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
         <title>HLBS Online Widget</title>
     </head>
@@ -38,8 +38,22 @@
                         </linearGradient>
                     </defs>
 
-                    <circle id="circle" class="progress-ring__circle" stroke-width="6" fill="transparent" stroke-linecap="round" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
-					<circle id="background-circle" class="progress-ring__circle" stroke-width="6" fill="transparent" stroke-linecap="round" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
+                    <mask id="clip1">
+                        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                        <line x1="70" y1="73" x2="100%" y2="73" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                        <line x1="70" y1="67" x2="-100%" y2="67" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                        <line x1="70" y1="70" x2="268" y2="0" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                    </mask>
+                    
+                    <mask id="clip2">
+                        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                        <line x1="70" y1="73" x2="100%" y2="73" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                        <line x1="70" y1="67" x2="-100%" y2="67" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                        <line x1="70" y1="70" x2="268" y2="0" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                    </mask>
+
+                    <circle id="circle" mask="url(#clip1)" class="progress-ring__circle" stroke-width="6" fill="transparent" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
+					<circle id="background-circle" mask="url(#clip2)" class="progress-ring__circle" stroke-width="6" fill="transparent" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
                 </svg>
                 <h2 id="count" class="glitch"></h2>
                 <h3 id="hint" class="glitch" data-locale="#PLAYERS" hidden></h3>
@@ -64,6 +78,6 @@
         </div>
 
         <!-- scripts -->
-        <script src="./script.js?v=9"></script>
+        <script src="./script.js?v=10"></script>
     </body>
 </html>
