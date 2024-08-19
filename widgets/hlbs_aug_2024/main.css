@@ -22,7 +22,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "Courier", "HL2", Arial, Helvetica, sans-serif;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }
 
 body {
@@ -81,7 +81,6 @@ h3#hint {
     left: 50%;
     top: 50%;
     margin-top: 38px;
-    font-family: "Courier", "Bahnschrift", "BahnschriftFB", Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-stretch: semi-condensed;
     text-transform: uppercase;
@@ -98,7 +97,6 @@ h3#hint {
 }
 
 .goals * {
-    font-family: "Courier", "Bahnschrift", "BahnschriftFB", Arial, Helvetica, sans-serif;
     text-transform: uppercase;
 }
 
