@@ -5,7 +5,7 @@ const settings = {
   // corsProxy: "https://bold-grass-47ed.widget-cors.workers.dev/?",
   appid: "130",
   goals: {
-    low: 620,
+    low: 420,
     high: 5000,
     ultrahigh: 10000
   },
@@ -239,6 +239,9 @@ const formatNumber = (x) => {
 
   // initialize everything
   ApplyLocalisation();
-  SetGoalsTimer();
+
+  if ( !window.location.href.includes("nogoalshide") )
+    SetGoalsTimer();
+  
   Update();
 })();
