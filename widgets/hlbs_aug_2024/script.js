@@ -189,14 +189,12 @@ const formatNumber = (x) => {
         appElement.classList.add("shake");
       }
 
-      if (peakValue >= settings.goals.high) {
-        if (!confettiStarted) {
-          confetti.render();
-          confettiStarted = true;
-        }
+      if (peakValue >= settings.goals.high && !confettiStarted) {
+        confetti.render();
+        confettiStarted = true;
       }
 
-      if (peakValue >= settings.goals.ultrahigh) {
+      if (peakValue >= settings.goals.ultrahigh&& !appElement.classList.contains("glitch")) {
         appElement.classList.add("glitch");
       }
       
