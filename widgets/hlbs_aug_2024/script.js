@@ -199,6 +199,11 @@ const formatNumber = (x) => {
       }
       
       // Update color of the circle and text
+      let glitchColor1 = interpolate("#afbfc5", "#339fcb", playerCount / settings.goals.ultrahigh);
+      let glitchColor2 = interpolate("#838383", "#0677b9", playerCount / settings.goals.ultrahigh);
+      document.documentElement.style.setProperty("--glitch-color-1", glitchColor1);
+      document.documentElement.style.setProperty("--glitch-color-2", glitchColor2);
+
       let globalColor = interpolate("#ffffff", "#00b4ff", playerCount / settings.goals.ultrahigh);
       document.documentElement.style.setProperty("--color", globalColor);
 

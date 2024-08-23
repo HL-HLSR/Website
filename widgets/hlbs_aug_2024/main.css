@@ -241,18 +241,18 @@ h3#hint {
 
 @keyframes glitch-small {
     0% {
-        text-shadow: 1px 1px 0px #00b4ff, -1px -1px 0 #0677b9
+        text-shadow: 1px 1px 0px var(--glitch-color-1), -1px -1px 0 var(--glitch-color-2);
     }
 
     33% {
-        text-shadow: 2px 3px 0px #00b4ff, -3px -2px 0 #0677b9;
+        text-shadow: 2px 3px 0px var(--glitch-color-1), -3px -2px 0 var(--glitch-color-2);
     }
 
     66% {
-        text-shadow: -1px -1px 0px #00b4ff, 1px 1px 0 #0677b9;
+        text-shadow: -1px -1px 0px var(--glitch-color-1), 1px 1px 0 var(--glitch-color-2);
     }
 
     to {
-        text-shadow: 2px 1px 0px #00b4ff, -1px -2px 0 #0677b9;
+        text-shadow: 2px 1px 0px var(--glitch-color-1), -1px -2px 0 var(--glitch-color-2);
     }
 }
