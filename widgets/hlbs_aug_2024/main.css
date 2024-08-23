@@ -56,6 +56,7 @@ body {
     left: 50%;
     bottom: 50%;
     margin-bottom: 5px;
+    text-shadow: 0 0 20px var(--glow-color);
 }
 
 svg {
@@ -84,6 +85,7 @@ h3#hint {
     font-weight: bold;
     font-stretch: semi-condensed;
     text-transform: uppercase;
+    text-shadow: 0 0 20px var(--glow-color);
 }
 
 .goals {
@@ -241,18 +243,18 @@ h3#hint {
 
 @keyframes glitch-small {
     0% {
-        text-shadow: 1px 1px 0px var(--glitch-color-1), -1px -1px 0 var(--glitch-color-2);
+        text-shadow: 1px 1px 0px var(--glitch-color-1), -1px -1px 0 var(--glitch-color-2), 0 0 20px var(--glow-color);
     }
 
     33% {
-        text-shadow: 2px 3px 0px var(--glitch-color-1), -3px -2px 0 var(--glitch-color-2);
+        text-shadow: 2px 3px 0px var(--glitch-color-1), -3px -2px 0 var(--glitch-color-2), 0 0 20px var(--glow-color);
     }
 
     66% {
-        text-shadow: -1px -1px 0px var(--glitch-color-1), 1px 1px 0 var(--glitch-color-2);
+        text-shadow: -1px -1px 0px var(--glitch-color-1), 1px 1px 0 var(--glitch-color-2), 0 0 20px var(--glow-color);
     }
 
     to {
-        text-shadow: 2px 1px 0px var(--glitch-color-1), -1px -2px 0 var(--glitch-color-2);
+        text-shadow: 2px 1px 0px var(--glitch-color-1), -1px -2px 0 var(--glitch-color-2), 0 0 20px var(--glow-color);
     }
 }

@@ -199,10 +199,14 @@ const formatNumber = (x) => {
       }
       
       // Update color of the circle and text
-      let glitchColor1 = interpolate("#afbfc5", "#339fcb", playerCount / settings.goals.ultrahigh);
-      let glitchColor2 = interpolate("#838383", "#0677b9", playerCount / settings.goals.ultrahigh);
+      let goalCoeff = Math.max(Math.min(playerCount / settings.goals.ultrahigh, 1.0), 0.0);
+      let glitchColor1 = interpolate("#afbfc5", "#339fcb", goalCoeff);
+      let glitchColor2 = interpolate("#838383", "#0677b9", goalCoeff);
       document.documentElement.style.setProperty("--glitch-color-1", glitchColor1);
       document.documentElement.style.setProperty("--glitch-color-2", glitchColor2);
+
+      let glowColor = "#003aff" + (Math.round(goalCoeff * 255)).toString(16).padStart(2, "0");
+      document.documentElement.style.setProperty("--glow-color", glowColor);
 
       let globalColor = interpolate("#ffffff", "#00b4ff", playerCount / settings.goals.ultrahigh);
       document.documentElement.style.setProperty("--color", globalColor);
