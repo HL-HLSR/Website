@@ -217,7 +217,7 @@
       },
     },
     mounted() {
-      const client = io("wss://api2.hlsr.tk:2024");
+      const client = io("https://api2.hlsr.tk.proxy2.lambdageneration.com");
 
       if (!location.href.includes("nologo")) {
         document.querySelector("#app").classList.add("logo");
