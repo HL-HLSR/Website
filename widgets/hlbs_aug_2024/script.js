@@ -183,7 +183,7 @@ const formatNumber = (x) => {
 
       // let playerCount = 5639;
 
-      if (peakValue >= settings.goals.low) {
+      if (peakValue >= settings.goals.high) {
         if (!confettiStarted) {
           confetti.render();
           confettiStarted = true;
@@ -192,14 +192,13 @@ const formatNumber = (x) => {
 
       const appElement = document.querySelector("#app");
 
-      if (peakValue >= settings.goals.high && !appElement.classList.contains("shake")) {
+      if (peakValue >= settings.goals.low && !appElement.classList.contains("shake")) {
         appElement.classList.add("shake");
       }
 
       if (playerCount >= settings.goals.ultrahigh && playerCount >= peakValue) {
         appElement.classList.add("glitch");
       } else {
-        // DO not disable shake animation here
         appElement.classList.remove("glitch");
       }
       
