@@ -69,6 +69,7 @@ const formatNumber = (x) => {
   });
 
   let confettiStarted = false;
+  let currentOnline = 0;
   let peakValue = 0;
 
   let originalColor =
@@ -165,23 +166,27 @@ const formatNumber = (x) => {
 
   function Update() {
     async function MakeRequest() {
-      const res = await fetch(
-        `https://api2.hlsr.tk:2024/hlbs-stats`
-      );
-
-      const resJson = await res.json();
-
-      let playerCount = resJson.online;
-      peakValue = resJson.peak;
-
-      if (window.debug && window.debug.enabled) {
-        playerCount = window.debug.online;
-        peakValue = window.debug.peak;
+      try {
+        const res = await fetch(
+          `https://api2.hlsr.tk:2024/hlbs-stats`
+        );
+  
+        const resJson = await res.json();
+  
+        if (window.debug && window.debug.enabled) {
+          currentOnline = window.debug.online;
+          peakValue = window.debug.peak;
+        } else {
+          currentOnline = resJson.online;
+          peakValue = resJson.peak;
+        }
+      } catch(ex) {
+        console.error(ex);
       }
 
-      peakValue = Math.max(peakValue, playerCount);
+      peakValue = Math.max(peakValue, currentOnline);
 
-      // let playerCount = 5639;
+      // let currentOnline = 5639;
 
       const appElement = document.querySelector("#app");
 
@@ -199,7 +204,7 @@ const formatNumber = (x) => {
       }
       
       // Update color of the circle and text
-      let goalCoeff = Math.max(Math.min(playerCount / settings.goals.ultrahigh, 1.0), 0.0);
+      let goalCoeff = Math.max(Math.min(currentOnline / settings.goals.ultrahigh, 1.0), 0.0);
       let glitchColor1 = interpolate("#afbfc5", "#339fcb", goalCoeff);
       let glitchColor2 = interpolate("#838383", "#0677b9", goalCoeff);
       document.documentElement.style.setProperty("--glitch-color-1", glitchColor1);
@@ -208,20 +213,20 @@ const formatNumber = (x) => {
       let glowColor = "#003aff" + (Math.round(goalCoeff * 255)).toString(16).padStart(2, "0");
       document.documentElement.style.setProperty("--glow-color", glowColor);
 
-      let globalColor = interpolate("#ffffff", "#00b4ff", playerCount / settings.goals.ultrahigh);
+      let globalColor = interpolate("#ffffff", "#00b4ff", currentOnline / settings.goals.ultrahigh);
       document.documentElement.style.setProperty("--color", globalColor);
 
       // Uncomment this when the event is over
       // appElement.classList.add("shake");
 
-      UpdateActiveGoal(playerCount);
-      peakValue = Math.max(peakValue, playerCount);
+      UpdateActiveGoal(currentOnline);
+      peakValue = Math.max(peakValue, currentOnline);
 
       hint.removeAttribute("hidden");
-      count.innerHTML = formatNumber(playerCount);
+      count.innerHTML = formatNumber(currentOnline);
       circle.style.transition = `stroke-dashoffset 400ms linear, color 0.2s ease`;
 
-      let progress = Math.min(Math.max((playerCount / settings.goals.ultrahigh), 0.0), 1.0);
+      let progress = Math.min(Math.max((currentOnline / settings.goals.ultrahigh), 0.0), 1.0);
       circle.style.strokeDashoffset = `${circumference + circumference * progress}`;
       // circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
