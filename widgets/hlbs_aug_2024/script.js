@@ -188,21 +188,24 @@ const formatNumber = (x) => {
 
       const appElement = document.querySelector("#app");
 
-      if (peakValue >= settings.goals.low && !appElement.classList.contains("shake")) {
+      if ((peakValue >= settings.goals.low || true) && !appElement.classList.contains("shake")) {
         appElement.classList.add("shake");
       }
 
-      if (peakValue >= settings.goals.high && !confettiStarted) {
+      if ((peakValue >= settings.goals.high || true) && !confettiStarted) {
         confetti.render();
         confettiStarted = true;
       }
 
-      if (peakValue >= settings.goals.ultrahigh&& !appElement.classList.contains("glitch")) {
+      if ((peakValue >= settings.goals.ultrahigh || true) && !appElement.classList.contains("glitch")) {
         appElement.classList.add("glitch");
       }
       
       // Update color of the circle and text
       let goalCoeff = Math.max(Math.min(currentOnline / settings.goals.ultrahigh, 1.0), 0.0);
+
+      goalCoeff = 1.0;
+
       let glitchColor1 = interpolate("#afbfc5", "#339fcb", goalCoeff);
       let glitchColor2 = interpolate("#838383", "#0677b9", goalCoeff);
       document.documentElement.style.setProperty("--glitch-color-1", glitchColor1);
@@ -211,7 +214,7 @@ const formatNumber = (x) => {
       let glowColor = "#003aff" + (Math.round(goalCoeff * 255)).toString(16).padStart(2, "0");
       document.documentElement.style.setProperty("--glow-color", glowColor);
 
-      let globalColor = interpolate("#ffffff", "#00b4ff", currentOnline / settings.goals.ultrahigh);
+      let globalColor = interpolate("#ffffff", "#00b4ff", goalCoeff);
       document.documentElement.style.setProperty("--color", globalColor);
 
       // Uncomment this when the event is over
@@ -224,7 +227,7 @@ const formatNumber = (x) => {
       count.innerHTML = formatNumber(currentOnline);
       circle.style.transition = `stroke-dashoffset 400ms linear, color 0.2s ease`;
 
-      let progress = Math.min(Math.max((currentOnline / settings.goals.ultrahigh), 0.0), 1.0);
+      let progress = Math.min(Math.max((goalCoeff), 0.0), 1.0);
       circle.style.strokeDashoffset = `${circumference + circumference * progress}`;
       // circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
