@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" style="--glitch-color-1:#afbfc5;--glitch-color-2:#838383;--glow-color:#003aff00;">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="main.css?v=10">
+        <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+        <title>Ricochet Online Widget</title>
+    </head>
+    <body>
+        <div id="app">
+            <div class="percent">
+                <div class="background">
+                    <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 176.52748 185.1386">
+                        <defs id="defs4">
+                            <marker refX="0" refY="0" orient="auto" style="overflow: visible;" id="Arrow1Mstart">
+                                <path d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z " transform="matrix(0.4,0,0,0.4,4,0)" style="fill-rule: evenodd; stroke: #000000; stroke-width: 1pt; marker-start: none;" id="path3206" />
+                            </marker>
+                            <marker refX="0" refY="0" orient="auto" style="overflow: visible;" id="Arrow1Mend">
+                                <path d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z " transform="matrix(-0.4,0,0,-0.4,-4,0)" style="fill-rule: evenodd; stroke: #000000; stroke-width: 1pt; marker-start: none;" id="path3209" />
+                            </marker>
+                            <marker refX="0" refY="0" orient="auto" style="overflow: visible;" id="Arrow1Lstart">
+                                <path d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z " transform="matrix(0.8,0,0,0.8,10,0)" style="fill-rule: evenodd; stroke: #000000; stroke-width: 1pt; marker-start: none;" id="path3200" />
+                            </marker>
+                        </defs>
+                        <path
+                            d="M 47.243238,12.929372 L 47.243238,38.836954 L 68.578895,38.836954 L 77.341753,65.887518 L 12.191803,166.85089 L 44.195288,166.85089 L 90.676538,98.271996 L 121.15605,175.23276 L 169.16127,159.993 L 161.5414,136.37138 L 139.44375,143.22927 L 87.628587,12.929372 L 47.243238,12.929372 z "
+                            style="fill: #000; fill-opacity: 0.15; fill-rule: evenodd; stroke: none; stroke-width: 1px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;"
+                        />
+                    </svg>
+                </div>
+                <svg class="progress-ring" viewBox="0 0 140 140" width="200" height="200">
+                    <defs>
+                        <linearGradient id="linear" x1="40%" y1="0%" x2="60%" y2="0%" spreadMethod="pad">
+                            <stop offset="0%" stop-color="#05a" />
+                            <stop offset="100%" stop-color="#0a5" />
+                        </linearGradient>
+                    </defs>
+
+                    <mask id="clip1">
+                        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                        <line x1="70" y1="73" x2="100%" y2="73" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                        <line x1="70" y1="67" x2="-100%" y2="67" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                        <line x1="70" y1="70" x2="390" y2="0" stroke="rgba(0, 0, 0, 0.3)" stroke-width="6" />
+                    </mask>
+                    
+                    <mask id="clip2">
+                        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                        <line x1="70" y1="73" x2="100%" y2="73" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                        <line x1="70" y1="67" x2="-100%" y2="67" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                        <line x1="70" y1="70" x2="390" y2="0" stroke="rgba(0, 0, 0, 0.6)" stroke-width="6" />
+                    </mask>
+
+                    <circle id="circle" mask="url(#clip1)" class="progress-ring__circle" stroke-width="6" fill="transparent" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
+					<circle id="background-circle" mask="url(#clip2)" class="progress-ring__circle" stroke-width="6" fill="transparent" shape-rendering="geometricPrecision" r="60" cx="70" cy="70" />
+                </svg>
+                <h2 id="count" class="glitch"></h2>
+                <h3 id="hint" class="glitch" data-locale="#PLAYERS" hidden></h3>
+                <div class="goals show">
+                    <div class="peak"><span data-locale="#PEAK"></span> <b id="peak-value">0</b></div>
+                    <div class="goal main">
+                        <span class="name" data-locale="#GOAL1"></span>
+                        <span class="value" id="low_goal">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <canvas id="canvas-background"></canvas>
+        </div>
+
+        <!-- scripts -->
+        <script src="./script.js?v=21"></script>
+    </body>
+</html>
