@@ -48,7 +48,6 @@ const formatNumber = (x) => {
   const hint = document.querySelector("#hint");
   const count = document.querySelector("#count");
   const circle = document.querySelector("#circle");
-  const circleBg = document.querySelector("#background-circle");
 
   const radius = parseInt(circle.getAttribute("r"));
 
@@ -59,7 +58,6 @@ const formatNumber = (x) => {
 
   const circumference = radius * 2 * Math.PI;
   circle.style.strokeDasharray = `${circumference} ${circumference}`;
-  circleBg.style.strokeDasharray = `${circumference} ${circumference}`;
 
   const confetti = new ConfettiGenerator({
     target: "canvas-background",
@@ -178,7 +176,7 @@ const formatNumber = (x) => {
       // Update color of the circle and text
       let goalCoeff = Math.max(Math.min(currentOnline / settings.goals.low, 1.0), 0.0);
 
-      goalCoeff = 1.0;
+      // goalCoeff = 1.0;
 
       let glitchColor1 = interpolate("#ECC1BF", "#E4312B", goalCoeff);
       let glitchColor2 = interpolate("#838383", "#D7120B", goalCoeff);
@@ -203,7 +201,6 @@ const formatNumber = (x) => {
 
       let progress = Math.min(Math.max((goalCoeff), 0.0), 1.0);
       circle.style.strokeDashoffset = `${circumference + circumference * progress}`;
-      // circleBg.style.strokeDashoffset = `${circumference * 2}`;
       document.querySelector("#peak-value").innerHTML = formatNumber(peakValue);
 
       setTimeout(Update, settings.updateInterval + 250);
@@ -214,7 +211,6 @@ const formatNumber = (x) => {
       circle.style.strokeDashoffset = `${circumference}`;
       firstUpdate = false;
     }
-    // circleBg.style.strokeDashoffset = `${circumference}`;
 
     // delay before the first request
     setTimeout(MakeRequest, 500);
