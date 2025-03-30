@@ -148,7 +148,7 @@ const formatNumber = (x) => {
     async function MakeRequest() {
       try {
         const res = await fetch(
-          `https://api2.hlsr.tk:2024/hlbs-stats`
+          `https://api2.hlsr.tk:2024/online`
         );
   
         const resJson = await res.json();
