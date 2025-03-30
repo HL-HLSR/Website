@@ -168,7 +168,7 @@ const formatNumber = (x) => {
 
       const appElement = document.querySelector("#app");
 
-      if ((peakValue >= settings.goals.low || true) && !appElement.classList.contains("shake")) {
+      if ((peakValue >= settings.goals.low) && !appElement.classList.contains("shake")) {
         appElement.classList.add("shake");
         appElement.classList.add("glitch");
         confetti.render();
@@ -180,15 +180,15 @@ const formatNumber = (x) => {
 
       goalCoeff = 1.0;
 
-      let glitchColor1 = interpolate("#afbfc5", "#339fcb", goalCoeff);
-      let glitchColor2 = interpolate("#838383", "#0677b9", goalCoeff);
+      let glitchColor1 = interpolate("#ECC1BF", "#E4312B", goalCoeff);
+      let glitchColor2 = interpolate("#838383", "#D7120B", goalCoeff);
       document.documentElement.style.setProperty("--glitch-color-1", glitchColor1);
       document.documentElement.style.setProperty("--glitch-color-2", glitchColor2);
 
-      let glowColor = "#003aff" + (Math.round(goalCoeff * 255)).toString(16).padStart(2, "0");
+      let glowColor = "#FF5500" + (Math.round(goalCoeff * 255)).toString(16).padStart(2, "0");
       document.documentElement.style.setProperty("--glow-color", glowColor);
 
-      let globalColor = interpolate("#ffffff", "#00b4ff", goalCoeff);
+      let globalColor = interpolate("#ffffff", "#f06260", goalCoeff);
       document.documentElement.style.setProperty("--color", globalColor);
 
       // Uncomment this when the event is over
