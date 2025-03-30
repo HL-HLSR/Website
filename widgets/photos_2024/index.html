@@ -248,6 +248,9 @@
         let db = await res.json();
 
         db.forEach((post) => {
+          if (!post.urls)
+            post.urls = [];
+
           post.urls.forEach((url) => {
             this.images.push({
               show: false,
