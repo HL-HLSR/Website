@@ -11,8 +11,8 @@
 }
 
 @font-face {
-    font-family: "OCR-A";
-    src: url(/assets/fonts/ocr-aregular.ttf) format("truetype");
+    font-family: "Dredwerkz";
+    src: url(/assets/fonts/Dredwerkz.woff2) format("woff2");
 }
 
 :root {
@@ -22,7 +22,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+    font-family: "Dredwerkz", "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
     font-weight: bold !important;
 }
 
@@ -44,7 +44,7 @@ body {
     height: fit-content;
     width: fit-content;
     border-radius: 50%;
-    background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px), radial-gradient(#0000004C, transparent);
+    background: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 3px);
     width: 200px;
     height: 200px;
 }
@@ -202,10 +202,20 @@ h3#hint {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .background svg {
     width: 130px;
+}
+
+.background > * {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #canvas-background {
