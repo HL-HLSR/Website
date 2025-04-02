@@ -234,24 +234,25 @@ const formatNumber = (x) => {
 
   function Update() {
     async function MakeRequest() {
-      try {
-        const res = await fetch(
-          `https://api2.hlsr.tk:2024/online`
-        );
+      // try {
+      //   const res = await fetch(
+      //     `https://api2.hlsr.tk:2024/online`
+      //   );
 
-        const resJson = await res.json();
+      //   const resJson = await res.json();
 
-        if (window.debug && window.debug.enabled) {
-          currentOnline = window.debug.online;
-          peakValue = window.debug.peak;
-        } else {
-          currentOnline = resJson.online;
-          peakValue = resJson.peak;
-        }
-      } catch (ex) {
-        console.error(ex);
-      }
+      //   if (window.debug && window.debug.enabled) {
+      //     currentOnline = window.debug.online;
+      //     peakValue = window.debug.peak;
+      //   } else {
+      //     currentOnline = resJson.online;
+      //     peakValue = resJson.peak;
+      //   }
+      // } catch (ex) {
+      //   console.error(ex);
+      // }
 
+      currentOnline = 353;
       peakValue = Math.max(peakValue, currentOnline);
 
       const appElement = document.querySelector("#app");
