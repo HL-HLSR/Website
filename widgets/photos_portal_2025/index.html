@@ -12,15 +12,15 @@
   <title>Виджет</title>
   <style>
     @font-face {
-      font-family: "Dredwerkz";
-      src: url(/assets/fonts/Dredwerkz.woff2) format("woff2");
+      font-family: "Portal";
+      src: url(../../assets/fonts/univers67condensedbold.otf) format("opentype");
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: "Dredwerkz", "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+      font-family: "Portal", "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
     }
 
     body {
@@ -98,8 +98,7 @@
           rgba(0, 0, 0, 0.1) 3px,
           rgba(0, 0, 0, 0.1) 3px),
         linear-gradient(#0000002c, #0000002c);
-      padding: 8px 16px;
-      padding-top: 6px;
+      padding: 4px 16px;
       border-radius: 4px;
       margin-top: 10px;
       margin-left: auto;
@@ -222,7 +221,7 @@
       },
     },
     mounted() {
-      // const client = io("wss://api2.hlsr.tk:2024");
+      const client = io("wss://api2.hlsr.tk:2024");
 
       if (!location.href.includes("nologo")) {
         document.querySelector("#app").classList.add("logo");
@@ -249,64 +248,64 @@
       }
 
       // static database
-      fetch("db.json").then(async (res) => {
-        let db = await res.json();
+      // fetch("db.json").then(async (res) => {
+      //   let db = await res.json();
 
-        db.forEach((post) => {
-          if (!post.urls)
-            post.urls = [];
+      //   db.forEach((post) => {
+      //     if (!post.urls)
+      //       post.urls = [];
 
-          post.urls.forEach((url) => {
-            this.images.push({
-              show: false,
-              animate: false,
-              author: post.author.displayName,
-              url: url + "?size=normal",
-              postId: post.postId,
-            });
-          });
-        });
-
-        this.images = shuffle(this.images);
-        this.images[0].animate = true;
-
-        this.$nextTick(() => {
-          this.showByIndex(0);
-
-          setInterval(() => {
-            this.showNext();
-          }, 8000);
-        });
-      });
-
-      // socket.io code
-      // uncomment this if you're ready for the next wave of server crashes
-      // client.on("posts-update", (posts) => {
-      //   let previousUrl = this.images[this.currentImage]
-      //     ? this.images[this.currentImage].url
-      //     : "";
-
-      //   posts = shuffle(posts);
-      //   this.posts = posts;
-
-      //   posts.forEach((post) => {
       //     post.urls.forEach((url) => {
-      //       let res = this.images.find((x) => x.url.startsWith(url));
-
-      //       if (!res) {
-      //         this.images.push({
-      //           show: false,
-      //           animate: this.images.length == 0,
-      //           author: post.author.displayName,
-      //           url: url + "?size=normal",
-      //           postId: post.postId,
-      //         });
-      //       }
+      //       this.images.push({
+      //         show: false,
+      //         animate: false,
+      //         author: post.author.displayName,
+      //         url: url + "?size=normal",
+      //         postId: post.postId,
+      //       });
       //     });
       //   });
 
-      //   if (this.currentImage == -1) this.showByIndex(0);
+      //   this.images = shuffle(this.images);
+      //   this.images[0].animate = true;
+
+      //   this.$nextTick(() => {
+      //     this.showByIndex(0);
+
+      //     setInterval(() => {
+      //       this.showNext();
+      //     }, 8000);
+      //   });
       // });
+
+      // socket.io code
+      // uncomment this if you're ready for the next wave of server crashes
+      client.on("posts-update", (posts) => {
+        let previousUrl = this.images[this.currentImage]
+          ? this.images[this.currentImage].url
+          : "";
+
+        posts = shuffle(posts);
+        this.posts = posts;
+
+        posts.forEach((post) => {
+          post.urls.forEach((url) => {
+            let res = this.images.find((x) => x.url.startsWith(url));
+
+            if (!res) {
+              this.images.push({
+                show: false,
+                animate: this.images.length == 0,
+                author: post.author.displayName,
+                url: url + "?size=normal",
+                postId: post.postId,
+              });
+            }
+          });
+        });
+
+        if (this.currentImage == -1) this.showByIndex(0);
+      });
 
       if (window.requestAnimationFrame) {
         // Make sure we don't switch slides while the tab is hidden
