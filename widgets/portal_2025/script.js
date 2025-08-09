@@ -173,38 +173,39 @@ const formatNumber = (x) => {
 
   function Update() {
     async function MakeRequest() {
-      try {
-        const res = await fetch(
-          `https://api2.hlsr.tk:2024/online`
-        );
+      // try {
+      //   const res = await fetch(
+      //     `https://api2.hlsr.tk:2024/online`
+      //   );
   
-        const resJson = await res.json();
+      //   const resJson = await res.json();
   
-        if (window.debug && window.debug.enabled) {
-          currentOnline = window.debug.online;
-          peakValue = window.debug.peak;
-        } else {
-          currentOnline = resJson.online;
-          peakValue = resJson.peak;
-        }
-      } catch(ex) {
-        console.error(ex);
-      }
+      //   if (window.debug && window.debug.enabled) {
+      //     currentOnline = window.debug.online;
+      //     peakValue = window.debug.peak;
+      //   } else {
+      //     currentOnline = resJson.online;
+      //     peakValue = resJson.peak;
+      //   }
+      // } catch(ex) {
+      //   console.error(ex);
+      // }
 
-      // peakValue = Math.max(peakValue, currentOnline);
+      currentOnline = 3847;
+      peakValue = Math.max(peakValue, currentOnline);
 
       const appElement = document.querySelector("#app");
 
-      if ((peakValue >= settings.goals.low) && !appElement.classList.contains("shake")) {
+      if (true || (peakValue >= settings.goals.low) && !appElement.classList.contains("shake")) {
         appElement.classList.add("shake");
       }
 
-      if ((peakValue >= settings.goals.high) && !confettiStarted) {
+      if (true || (peakValue >= settings.goals.high) && !confettiStarted) {
         confetti.render();
         confettiStarted = true;
       }
 
-      if ((peakValue >= settings.goals.ultrahigh) && !appElement.classList.contains("glitch")) {
+      if (true || (peakValue >= settings.goals.ultrahigh) && !appElement.classList.contains("glitch")) {
         appElement.classList.add("glitch");
       }
       
@@ -213,7 +214,9 @@ const formatNumber = (x) => {
       let goal2Coeff = Math.max(Math.min(currentOnline / settings.goals.high, 1.0), 0.0);
       let goal3Coeff = Math.max(Math.min(currentOnline / settings.goals.ultrahigh, 1.0), 0.0);
 
-      // goalCoeff = 1.0;
+      goal1Coeff = 1.0;
+      goal2Coeff = 1.0;
+      goal3Coeff = 1.0;
 
       let glitchColor1 = interpolate("#afbfc5", "#ff700a", goal3Coeff).toString();
       let glitchColor2 = interpolate("#838383", "#d77e3e", goal3Coeff).toString();
@@ -224,7 +227,8 @@ const formatNumber = (x) => {
       if (goal2Coeff < 1.0) {
         globalColor = interpolate("#ffffff", "#27beff", goal2Coeff);
       } else {
-        globalColor = interpolate("#27beff", "#ffb500", (currentOnline - settings.goals.high) / (settings.goals.ultrahigh - settings.goals.high));
+        // globalColor = interpolate("#27beff", "#ffb500", (currentOnline - settings.goals.high) / (settings.goals.ultrahigh - settings.goals.high));
+        globalColor = interpolate("#27beff", "#ffb500", 1);
       }
 
       const globalColorStr = `${Math.floor(globalColor.r * 255)}, ${Math.floor(globalColor.g * 255)}, ${Math.floor(globalColor.b * 255)}`;
@@ -265,8 +269,8 @@ const formatNumber = (x) => {
   // initialize everything
   ApplyLocalisation();
 
-  if ( !window.location.href.includes("nogoalshide") )
-   SetGoalsTimer();
+  // if ( !window.location.href.includes("nogoalshide") )
+  //  SetGoalsTimer();
   
   Update();
 })();
