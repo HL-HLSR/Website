@@ -161,7 +161,7 @@ const formatNumber = (x) => {
     const c1 = new Color("P3", [r1 / 255, g1 / 255, b1 / 255]);
     const c2 = new Color("P3", [r2 / 255, g2 / 255, b2 / 255]);
 
-    const final = c1.mix(c2, percent, {space: "lch", outputSpace: "lch"});
+    const final = c1.mix(c2, percent, {space: "lch", outputSpace: "a98rgb"});
     final.a = alpha;
 
     return final;
@@ -227,10 +227,11 @@ const formatNumber = (x) => {
         globalColor = interpolate("#27beff", "#ffb500", (currentOnline - settings.goals.high) / (settings.goals.ultrahigh - settings.goals.high));
       }
 
-      document.documentElement.style.setProperty("--color", globalColor.toString());
+      const globalColorStr = `${Math.floor(globalColor.r * 255)}, ${Math.floor(globalColor.g * 255)}, ${Math.floor(globalColor.b * 255)}`;
+      document.documentElement.style.setProperty("--color", `rgb(${globalColorStr})`);
       
       globalColor.a = goal3Coeff;
-      document.documentElement.style.setProperty("--glow-color", globalColor.toString());
+      document.documentElement.style.setProperty("--glow-color", `rgba(${globalColorStr}, ${Math.round(globalColor.a * 255)})`);
 
       // Uncomment this when the event is over
       // appElement.classList.add("shake");
