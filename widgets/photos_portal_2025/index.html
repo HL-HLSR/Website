@@ -223,9 +223,9 @@
     mounted() {
       const client = io("wss://api2.hlsr.tk:2024");
 
-      if (!location.href.includes("nologo")) {
-        document.querySelector("#app").classList.add("logo");
-      }
+      document.querySelector("#app").classList.add("logo");
+      // if (!location.href.includes("nologo")) {
+      // }
 
       if (location.href.includes("centered")) {
         document.querySelector("#app").classList.add("centered");
