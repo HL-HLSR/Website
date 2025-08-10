@@ -200,7 +200,7 @@ const formatNumber = (x) => {
         appElement.classList.add("shake");
       }
 
-      if (true || (peakValue >= settings.goals.high) && !confettiStarted) {
+      if ((true || peakValue >= settings.goals.high) && !confettiStarted) {
         confetti.render();
         confettiStarted = true;
       }
